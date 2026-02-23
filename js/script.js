@@ -9,25 +9,40 @@ const RemoveAllBtn = $.querySelector("button");
 let tags = [];
 
 // Create a new tag when user pesses Enter
-input.addEventListener("keypress", (e) => {
-  console.log(e.keyCode);
+const createTags = (e) => {
   const valueInput = input.value.trim();
   let li = null;
-  // Allow adding tags only if the total is less than 10
-  if (e.keyCode === 13 && tags.length < 10 && valueInput) {
-    li = `<li>${valueInput}<i>×</i></li>`;
-    input.insertAdjacentHTML("beforebegin", li);
-    tags.push(valueInput);
+  if (e.key === "Enter" && tags.length < 10 && valueInput) {
+    valueInput.split(",").forEach((tag) => {
+      if (!tags.includes(tag.toLocaleLowerCase())) {
+        tags.push(tag.toLocaleLowerCase());
+        li = `<li>${tag}<i onclick="removeTag(this)">×</i></li>`;
+        input.insertAdjacentHTML("beforebegin", li);
+        input.value = "";
+        remainingTags.textContent = 10 - tags.length;
+      } else {
+        input.value = "";
+      }
+    });
+  } else if (
+    (e.key === "Enter" && tags.length >= 10) ||
+    (e.key === "Enter" && tags.includes(valueInput.toLocaleLowerCase())) ||
+    (e.key === "Enter" && valueInput === "")
+  ) {
     input.value = "";
-    remainingTags.textContent = 10 - tags.length;
   }
-  // Stop adding tags and clear input when the limit is reached
-  else if (e.keyCode === 13 && tags.length >= 10) {
-    input.value = "";
-  } else if (e.keyCode === 13 && valueInput === "") {
-    input.value = "";
-  }
+};
+
+input.addEventListener("keyup", (e) => {
+  createTags(e);
 });
+
+
+window.removeTag = (elem) => {
+  elem.parentElement.remove();
+  tags.length--;
+  remainingTags.textContent = 10 - tags.length;
+};
 
 RemoveAllBtn.addEventListener("click", () => {
   tags = [];
