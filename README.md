@@ -5,6 +5,8 @@ An interactive Tag Generator built with Vanilla JavaScript.
 This project focuses on DOM manipulation, event handling, and basic state management.  
 The HTML and CSS structure were pre-built, and the JavaScript functionality was implemented from scratch.
 
+You can try the project online [here](https://tags-generator-gamma.vercel.app/)
+
 ---
 
 ## ✨ Features
